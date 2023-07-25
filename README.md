@@ -8,15 +8,15 @@ The utility and its dependencies will be installed in an isolated virtual enviro
 and made available from the terminal.
 
 ```shell
-$ pipx install git+https://github.com/Klavionik/image-finder.git
+pipx install git+https://github.com/Klavionik/image-finder.git
 ```
 
 Another way is to install it via `pip`, but you'll need to activate the venv every time
 to run `findimg` command.
 
 ```shell
-$ python -m venv venv && source venv/bin/activate
-$ pip install git+https://github.com/Klavionik/image-finder.git
+python -m venv venv && source venv/bin/activate
+pip install git+https://github.com/Klavionik/image-finder.git
 ```
 
 ## Usage
