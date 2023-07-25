@@ -1,14 +1,14 @@
 """
 Find images similar to a given reference image using a perceptual hashing algorithm.
-May work even if the search target (or the reference) if cropped, resized, rotated,
-color-manipulated etc.
+May work even if the search target (or the reference) is cropped, resized, rotated,
+color-manipulated, etc.
 
 Example:
     Find images similar to ref.png inside /home/user directory.
     $ findimg /home/user/ref.png /home/user
 
     Find images similar to ref.png inside /home/user directory, excluding "excludeme" and "skipthis" directories.
-    $ findimg --exclude excludeme,skipthis /home/user/reference.png /home/user
+    $ findimg --exclude excludeme,skipthis /home/user/ref.png /home/user
 """
 
 import argparse
