@@ -38,7 +38,7 @@ parser.add_argument('-d', '--distance', help=f'Max. Hamming distance. Defaults t
 parser.add_argument('-e', '--exclude', help='Directories to exclude from search (a comma-separated list).')
 parser.add_argument('--debug', action='store_true', help="Output debug messages")
 
-VALID_TYPES = ('image/jpeg', 'image/png')
+VALID_TYPES = ('image/jpeg', 'image/png', 'image/gif', 'image/svg', 'image/bmp')
 
 
 def make_hash(path: Path, sensitivity: int) -> Optional[ImageHash]:
