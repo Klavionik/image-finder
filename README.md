@@ -1,49 +1,50 @@
-# Поиск схожих изображений
+# Similar Images Finder
+A CLI utility to find similar/duplicate images using perceptual hashing algorithm. Built 
+upon ImageHash library.
 
-Скрипт для поиска похожих изображений. Внутри работает библиотека **imagehash**, использующая 
-алгоритм перцептуального хэширования с использованием DCT (discrete cosine transform).
-
-## Установка
-Для работы скрипта нужен Python версии 3.7 или выше.
+## Install
+The recommended way to install this package is using [pipx](https://pypa.github.io/pipx). 
+The utility and its dependencies will be installed in an isolated virtual environment 
+and made available from the terminal.
 
 ```shell
-$ git clone https://github.com/Klavionik/find_image.git
-$ cd find_image
+$ pipx install git+https://github.com/Klavionik/image-finder.git
+```
+
+Another way is to install it via `pip`, but you'll need to activate the venv every time
+to run `findimg` command.
+
+```shell
 $ python -m venv venv && source venv/bin/activate
-$ pip install -r requirements.txt
+$ pip install git+https://github.com/Klavionik/image-finder.git
 ```
 
-## Запуск
-```shell
-$ ./find_image.py {путь к файлу-образцу} {путь к начальной директории поиска}
-
-# Например, если образец в одной папке со скриптом, а искать мы хотим на рабочем столе
-$ ./find_image.py reference.jpg /home/user/Desktop
-# Или если файл в другой папке, а искать хотим в той, где скрипт
-$ ./find_image.py /home/user/Pictures/reference.jpg .
+## Usage
 ```
+usage: findimg [-h] [-s SENSITIVITY] [-d DISTANCE] [-e EXCLUDE] [--debug] reference top
 
-## Опции
-### -d - расстояние Хэмминга (по умолчанию 0)
-Максимальное расстояние Хэмминга при сравнении хэшей можно указать с помощью ключа `-d` или `--distance`.
+positional arguments:
+  reference             Path to the reference image.
+  top                   Path to the top search directory.
 
-```shell
-# Максимальная разница между хэшами - 5 битов
-$ ./find_image.py -d 5 reference/jpg .
-```
+options:
+  -h, --help            show this help message and exit
+  -s SENSITIVITY, --sensitivity SENSITIVITY
+                        Hashing sensitivity (2 - 8). Defaults to 7.
+  -d DISTANCE, --distance DISTANCE
+                        Max. Hamming distance. Defaults to 0.
+  -e EXCLUDE, --exclude EXCLUDE
+                        Directories to exclude from search (a comma-separated list).
+  --debug               Output debug messages
 
-### -s - чувствительность хэширования (по умолчанию 7)
-Число от 2 до 8, определяющее параметр hash_size для алгоритма хэширования, задается ключом `-s` или `--sensitivity`.  
-Цитата: **Increasing the hash size allows an algorithm to store more detail in its hash, increasing its sensitivity to changes in detail.**
+Find images similar to a given reference image using a perceptual hashing algorithm.
+May work even if the search target (or the reference) if cropped, resized, rotated,
+color-manipulated etc.
 
-```shell
-$ ./find_image.py -s 6 reference.jpg .
-```
+Example:
+    Find images similar to ref.png inside /home/user directory.
+    $ findimg /home/user/ref.png /home/user
 
-### -e - список директорий, которые будут исключены из поиска
-С помощью ключа `-e` или `--exclude` можно задать через запятую список имен директорий, файлы в которых будут пропущены при поиске.  
-
-```shell
-# Папки с именами "skipme" и "excludethis" будут пропущены
-$ ./find_image.py -e skipme,excludethis reference.jpg .
+    Find images similar to ref.png inside /home/user directory, excluding "excludeme" and "skipthis" directories.
+    $ findimg --exclude excludeme,skipthis /home/user/reference.png /home/user
 ```

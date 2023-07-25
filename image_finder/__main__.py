@@ -1,9 +1,16 @@
-#!/usr/bin/env python3
 """
 Find images similar to a given reference image using a perceptual hashing algorithm.
 May work even if the search target (or the reference) if cropped, resized, rotated,
 color-manipulated etc.
+
+Example:
+    Find images similar to ref.png inside /home/user directory.
+    $ findimg /home/user/ref.png /home/user
+
+    Find images similar to ref.png inside /home/user directory, excluding "excludeme" and "skipthis" directories.
+    $ findimg --exclude excludeme,skipthis /home/user/reference.png /home/user
 """
+
 import argparse
 import logging
 import mimetypes
@@ -18,12 +25,17 @@ log = logging.getLogger('find_image')
 logging.basicConfig(format='%(message)s')
 log.setLevel(logging.INFO)
 
+DEFAULT_SENSITIVITY = 7
+DEFAULT_DISTANCE = 0
+
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter, epilog=__doc__)
-parser.add_argument('file', help='Path to the reference image')
-parser.add_argument('top', help='Path to the top search directory')
-parser.add_argument('-s', '--sensitivity', help='Hashing sensitivity (2 - 8)', type=int, default=7)
-parser.add_argument('-d', '--distance', help='Max. Hamming distance', type=int, default=0)
-parser.add_argument('-e', '--exclude', help='Directories to exclude from search (a comma-separated list)')
+parser.add_argument('reference', help='Path to the reference image.')
+parser.add_argument('top', help='Path to the top search directory.')
+parser.add_argument('-s', '--sensitivity', help=f'Hashing sensitivity (2 - 8). Defaults to {DEFAULT_SENSITIVITY}.',
+                    type=int, default=DEFAULT_SENSITIVITY)
+parser.add_argument('-d', '--distance', help=f'Max. Hamming distance. Defaults to {DEFAULT_DISTANCE}.', type=int,
+                    default=DEFAULT_DISTANCE)
+parser.add_argument('-e', '--exclude', help='Directories to exclude from search (a comma-separated list).')
 parser.add_argument('--debug', action='store_true', help="Output debug messages")
 
 VALID_TYPES = ('image/jpeg', 'image/png')
@@ -91,10 +103,10 @@ def parse_args() -> Tuple[Path, Path, int, int, list]:
     if not top.exists() or not top.is_dir():
         raise SystemExit('Directory does not exist: %s' % args.directory)
 
-    reference = Path(args.file)
+    reference = Path(args.reference)
 
     if not reference.exists():
-        raise SystemExit('File does not exist: %s' % args.file)
+        raise SystemExit('File does not exist: %s' % args.reference)
 
     sensitivity = args.sensitivity
 
@@ -106,7 +118,7 @@ def parse_args() -> Tuple[Path, Path, int, int, list]:
     return top, reference, args.sensitivity, args.distance, exclude
 
 
-def main() -> None:
+def _main() -> None:
     top, reference, sensitivity, max_distance, excluded = parse_args()
     reference_hash = make_hash(reference, sensitivity)
 
@@ -142,8 +154,8 @@ def main() -> None:
     log.info('\nFound %s similar images.', found)
 
 
-if __name__ == '__main__':
+def main() -> None:
     try:
-        main()
+        _main()
     except KeyboardInterrupt:
         log.info('\nExiting.')

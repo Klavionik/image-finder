@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "image-finder"
+version = "0.1.0"
+description = "A tool to find similar images by reference"
+authors = ["Roman Vlasenko <klavionik@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "image_finder"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+imagehash = "^4.3.1"
+pillow = "^10.0.0"
+
+[tool.poetry.scripts]
+findimg = "image_finder.__main__:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
