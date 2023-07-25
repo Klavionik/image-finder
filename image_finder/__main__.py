@@ -21,7 +21,7 @@ from typing import Tuple, Optional, Iterator
 from PIL import Image
 from imagehash import phash, ImageHash
 
-log = logging.getLogger('find_image')
+log = logging.getLogger(__package__)
 logging.basicConfig(format='%(message)s')
 log.setLevel(logging.INFO)
 
