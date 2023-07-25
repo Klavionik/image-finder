@@ -3,6 +3,9 @@ Find images similar to a given reference image using a perceptual hashing algori
 May work even if the search target (or the reference) is cropped, resized, rotated,
 color-manipulated, etc.
 
+Try decreasing sensitivity and increasing distance if you can't find what you are
+searching for.
+
 Example:
     Find images similar to ref.png inside /home/user directory.
     $ findimg /home/user/ref.png /home/user
